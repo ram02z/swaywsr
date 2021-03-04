@@ -43,9 +43,9 @@ fn main() -> Result<(), ExitFailure> {
         )
         .arg(
             Arg::with_name("focused-only")
-            .long("focused-long")
+            .long("focused-only")
             .short("f")
-            .help("Only shows the focused window on workspace")
+            .help("Displays only the focused window as an entry")
         )
         .get_matches();
 
