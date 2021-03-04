@@ -13,8 +13,7 @@ extern crate lazy_static;
 
 extern crate toml;
 
-use swayipc::reply::{Node, NodeType, WindowChange, WindowEvent, WorkspaceChange, WorkspaceEvent};
-use swayipc::Connection;
+use swayipc::{Connection, Node, NodeType, WindowChange, WindowEvent, WorkspaceChange, WorkspaceEvent};
 
 use std::collections::HashMap as Map;
 
@@ -148,7 +147,10 @@ fn get_classes(workspace: &Node, config: &Config) -> Vec<String> {
 
     for node in window_nodes {
         let is_focused = node.focused;
-        if focused_only && !is_focused {
+        // Requires PR #27 from swayipc-rs to get merged
+        // Dependancy should use crate when merged
+        let is_visible = node.visible.unwrap();
+        if focused_only && is_visible && !is_focused {
             continue;
         }
         let class = match get_class(node, config) {
@@ -212,7 +214,7 @@ pub fn handle_window_event(
     config: &Config,
 ) -> Result<(), Error> {
     match event.change {
-        WindowChange::New | WindowChange::Close | WindowChange::Move => {
+        WindowChange::New | WindowChange::Close | WindowChange::Move | WindowChange::Focus => {
             update_tree(connection, config)
         }
         _ => Ok(()),

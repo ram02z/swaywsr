@@ -1,6 +1,5 @@
 extern crate swayipc;
-use swayipc::reply::Event;
-use swayipc::{Connection, EventType};
+use swayipc::{Event, Connection, EventType};
 
 extern crate swaywsr;
 
@@ -93,7 +92,7 @@ fn main() -> Result<(), ExitFailure> {
     if focused_only {
         config
             .options
-            .insert("focused_only".to_string(), focused_only)
+            .insert("focused_only".to_string(), focused_only);
     }
 
     let subs = [EventType::Window, EventType::Workspace];

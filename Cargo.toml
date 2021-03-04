@@ -23,5 +23,5 @@ lazy_static = "1.4.0"
 clap = "2.33.3"
 toml = "0.5.8"
 serde = { version = "1.0.123", features = ["derive"] }
-swayipc = "2.7.2"
+swayipc = { path = "../swayipc-rs/blocking" } 
 itertools = "0.10.0"
