@@ -144,7 +144,13 @@ fn get_classes(workspace: &Node, config: &Config) -> Vec<String> {
     };
 
     let mut window_classes = Vec::new();
+    let focused_only = get_option(&config, "focused_only");
+
     for node in window_nodes {
+        let is_focused = node.focused;
+        if focused_only && !is_focused {
+            continue;
+        }
         let class = match get_class(node, config) {
             Ok(class) => class,
             Err(e) => {

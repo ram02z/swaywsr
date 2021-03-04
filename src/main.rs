@@ -42,11 +42,18 @@ fn main() -> Result<(), ExitFailure> {
                 .short("r")
                 .help("Remove duplicate entries in workspace"),
         )
+        .arg(
+            Arg::with_name("focused-only")
+            .long("focused-long")
+            .short("f")
+            .help("Only shows the focused window on workspace")
+        )
         .get_matches();
 
     let icons = matches.value_of("icons").unwrap_or("");
     let no_names = matches.is_present("no-names");
     let remove_duplicates = matches.is_present("remove-duplicates");
+    let focused_only = matches.is_present("focused-only");
     let mut config = match matches.value_of("config") {
         Some(filename) => {
             let file_config = match swaywsr::config::read_toml_config(filename) {
@@ -73,12 +80,20 @@ fn main() -> Result<(), ExitFailure> {
     };
 
     if no_names {
-        config.options.insert("no_names".to_string(), no_names);
+        config
+            .options
+            .insert("no_names".to_string(), no_names);
     }
     if remove_duplicates {
         config
             .options
             .insert("remove_duplicates".to_string(), remove_duplicates);
+    }
+
+    if focused_only {
+        config
+            .options
+            .insert("focused_only".to_string(), focused_only)
     }
 
     let subs = [EventType::Window, EventType::Workspace];
